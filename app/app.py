@@ -12,7 +12,6 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-import uuid
 import requests
 import credentials
 import msal
@@ -37,6 +36,7 @@ scopes = ["https://graph.microsoft.com/Mail.Read"]
 
 
 app = Flask(__name__)
+app.static_folder = 'static'
 app.secret_key = "your_secret_key"
 
 app_instance = msal.ConfidentialClientApplication(
@@ -139,7 +139,7 @@ def reply_email(smtp_server, smtp_port, sender_name, sender_email, password, rec
     msg = MIMEMultipart()
     msg['From'] = "{} <{}>".format(sender_name, sender_email)
     msg['To'] = recipient
-    msg.attach(MIMEText(message, 'plain'))
+    msg.attach(MIMEText(message, 'html'))
     msg['Subject'] = subject
     msg['In-Reply-To'] = message_id
     msg['References'] = message_id
@@ -184,16 +184,12 @@ def callback():
         redirect_uri=redirect_uri
     )
 
-    print(token_response)
-
     access_token = token_response['access_token']
     expires_in = int(token_response['expires_in'])
 
     current_datetime = datetime.datetime.now()
     delta = datetime.timedelta(seconds=expires_in)
     expiry_datetime = current_datetime + delta
-
-    print(expiry_datetime)
 
     session["access_token"] = access_token
     session["access_token_expires_in"] = expiry_datetime
@@ -246,7 +242,7 @@ def send_initial():
             print("Invalid User")
         
         if index < first_row_index + len(filtered_values) - 1:
-            time.sleep(1)
+            time.sleep(90)
 
     return redirect(url_for("home"))
 
@@ -268,7 +264,6 @@ def send_followup():
     values = result.get("values", [])
     filtered_values = [data for data in values if len(data) >= 5 and data[4].strip() == "Done" and (len(data) < 13 or not data[12].strip())]
     first_row_index = values.index(filtered_values[0]) + 2
-    print(filtered_values)
 
     for index, data in enumerate(filtered_values, start=first_row_index):
         original_index = values.index(data) + 2
@@ -280,11 +275,9 @@ def send_followup():
         followup_1_status = data[9] if len(data) > 9 else ""
         followup_2_status = data[10] if len(data) > 10 else ""
         followup_3_status = data[11] if len(data) > 11 else ""
-        print("code entered for loop")
 
         if user == "deepak":
             if followup_1_status != "Sent" or followup_2_status != "Sent" or followup_3_status != "Sent":
-                print("code entered if user deepak condititon")
                 # Send email from Deepak Mail Account
                 if followup_1_status != "Sent":
                     MESSAGE = mail_data['followups'][2].format(name=name, company=company)
@@ -300,31 +293,25 @@ def send_followup():
                     MESSAGE = mail_data['followups'][6].format(name=name, company=company)
                     reply_email(SMTP_SERVER[0], SMTP_PORT, SENDER_NAME[0], SMTP_USERNAME[0], SMTP_PASSWORD[0], recipient, SUBJECT, MESSAGE, message_id)
                     sheets.values().update(spreadsheetId=SPREADSHEET_ID, range=f"Sheet1!L{original_index}", valueInputOption="RAW", body={"values": [["Sent"]]}).execute()
-            else:
-                # All follow-ups have been sent, skip mail sending
-                print("All follow-ups have been sent")
+
         elif user == "deepanshu":
-            # Send email from Deepanshu Mail Account
             if followup_1_status != "Sent":
                 MESSAGE = mail_data['followups'][3].format(name=name, company=company)
-                # Send the follow-up 1 mail
                 reply_email(SMTP_SERVER[1], SMTP_PORT, SENDER_NAME[1], SMTP_USERNAME[1], SMTP_PASSWORD[1], recipient, SUBJECT, MESSAGE, message_id)
+                sheets.values().update(spreadsheetId=SPREADSHEET_ID2, range=f"Sheet1!J{original_index}", valueInputOption="RAW", body={"values": [["Sent"]]}).execute()
             elif followup_2_status != "Sent":
                 MESSAGE = mail_data['followups'][5].format(name=name, company=company)
-                # Send the follow-up 2 mail
-                # send_email(SMTP_SERVER[0], SMTP_PORT, SENDER_NAME[0], SMTP_USERNAME[0], SMTP_PASSWORD[0], recipient, SUBJECT, MESSAGE)
+                reply_email(SMTP_SERVER[1], SMTP_PORT, SENDER_NAME[1], SMTP_USERNAME[1], SMTP_PASSWORD[1], recipient, SUBJECT, MESSAGE, message_id)
+                sheets.values().update(spreadsheetId=SPREADSHEET_ID2, range=f"Sheet1!K{original_index}", valueInputOption="RAW", body={"values": [["Sent"]]}).execute()
 
             elif followup_3_status != "Sent":
                 MESSAGE = mail_data['followups'][7].format(name=name, company=company)
-                # Send the follow-up 3 mail
-                # send_email(SMTP_SERVER[0], SMTP_PORT, SENDER_NAME[0], SMTP_USERNAME[0], SMTP_PASSWORD[0], recipient, SUBJECT, MESSAGE)
-
-            else:
-                # All follow-ups have been sent, skip mail sending
-                break
+                reply_email(SMTP_SERVER[1], SMTP_PORT, SENDER_NAME[1], SMTP_USERNAME[1], SMTP_PASSWORD[1], recipient, SUBJECT, MESSAGE, message_id)
+                sheets.values().update(spreadsheetId=SPREADSHEET_ID2, range=f"Sheet1!L{original_index}", valueInputOption="RAW", body={"values": [["Sent"]]}).execute()
+                
         else:
             print("Invalid User")
         if index < first_row_index + len(filtered_values) - 1:
-            time.sleep(1)
+            time.sleep(90)
 
     return redirect(url_for("home"))

@@ -5,32 +5,44 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI - Mail</title>
+    <title>Mailer</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_index.css') }}">
 </head>
 
 <body>
-    <h1>AI - Mail</h1>
-    <h3>Initial Mail</h3>
-    <form action="/send-initial" method="POST">
+    <input class="subject" type="text">
+    {name}
+    {company}<br>
+    <textarea name="" id="" cols="100" rows="25"></textarea>
+    <br>
+    <button id="addButton" onclick="toggleFollowup()">Add Followup</button>
+    <div id="followupContainer"></div>
+    <input type="file">
+    <button onclick="downloadCSV()">Download File</button>
+    <select name="" id="">
+        <option value="">Select Mail</option>
+        <option value="">deepak.kumar@2020technologies.in</option>
+        <option value="">deep.v@vidorrallc.com</option>
+    </select>
+    <button>Send Test Mail</button>
+    <button>Start Campaign</button>
+    <form action="/send-initial" method="post">
         <input type="hidden" name="user" value="deepak">
-        <button type="submit">Send From - Deepak Kumar</button>
+        <input type="submit" value="Send Initial (Deepak)">
     </form>
-    <form action="/send-initial" method="POST">
-        <input type="hidden" name="user" value="deepanshu">
-        <button type="submit">Send From - Deepanshu Verma</button>
-    </form>
-
-    <h3>Follow Up</h3>
-    <input type="number" min="1" , max="3">
-
-    <form action="/send-followup" method="POST">
+    <form action="/send-followup" method="post">
         <input type="hidden" name="user" value="deepak">
-        <button type="submit">Send From - Deepak Kumar</button>
+        <input type="submit" value="Send Follow-up (Deepak)">
     </form>
-    <form action="/send-followup" method="POST">
+    <form action="/send-initial" method="post">
         <input type="hidden" name="user" value="deepanshu">
-        <button type="submit">Send From - Deepanshu Verma</button>
+        <input type="submit" value="Send Initial (Deepanshu)">
     </form>
+    <form action="/send-followup" method="post">
+        <input type="hidden" name="user" value="deepanshu">
+        <input type="submit" value="Send Follow-up (Deepanshu)">
+    </form>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 
 </html>
