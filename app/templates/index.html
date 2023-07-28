@@ -3,46 +3,51 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/static/images/mailer_logo_black_favicon.png">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_index.css')}}">
     <title>Mailer</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_index.css') }}">
 </head>
 
 <body>
-    <input class="subject" type="text">
-    {name}
-    {company}<br>
-    <textarea name="" id="" cols="100" rows="25"></textarea>
-    <br>
-    <button id="addButton" onclick="toggleFollowup()">Add Followup</button>
-    <div id="followupContainer"></div>
-    <input type="file">
-    <button onclick="downloadCSV()">Download File</button>
-    <select name="" id="">
-        <option value="">Select Mail</option>
-        <option value="">deepak.kumar@2020technologies.in</option>
-        <option value="">deep.v@vidorrallc.com</option>
-    </select>
-    <button>Send Test Mail</button>
-    <button>Start Campaign</button>
-    <form action="/send-initial" method="post">
-        <input type="hidden" name="user" value="deepak">
-        <input type="submit" value="Send Initial (Deepak)">
-    </form>
-    <form action="/send-followup" method="post">
-        <input type="hidden" name="user" value="deepak">
-        <input type="submit" value="Send Follow-up (Deepak)">
-    </form>
-    <form action="/send-initial" method="post">
-        <input type="hidden" name="user" value="deepanshu">
-        <input type="submit" value="Send Initial (Deepanshu)">
-    </form>
-    <form action="/send-followup" method="post">
-        <input type="hidden" name="user" value="deepanshu">
-        <input type="submit" value="Send Follow-up (Deepanshu)">
-    </form>
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <header>
+        <nav>
+            <div class="logo">
+                <img class="logos" src="static/images/mailer_logo_black.png" alt="Mailer_Logo">
+            </div>
+            <div class="user_action">
+                <button onclick="location.href='/users/login'">Login</button>
+                <button onclick="location.href='/users/register'">Get Started</button>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="section-one">
+            <h1>Revolutionize Your Lead Generation <span>with mailer</span></h1>
+            <p>Welcome to the future of lead generation! Say goodbye to manual email campaigns and hello to effortless
+                automation. Our free email automation service is here to supercharge your business by streamlining your
+                lead generation process. Spend less time on repetitive tasks and more time connecting with potential
+                customers. Let our powerful tools and personalized campaigns do the work for you. Get ready to take your
+                business to new heights with our innovative, easy-to-use platform. Sign up today and experience the
+                power of free email automation firsthand.</p>
+            <h1>And <span>it's free!</span></h1>
+            <p>You heard it right! We are giving free access to everyone.</p>
+            <button onclick="location.href='/users/register'">Get Started</button>
+            <button class="login" onclick="location.href='/users/login'">Login</button>
+        </div>
+        <div class="section-two">
+            <img src="static/images/vector.jpg" alt="Vector">
+        </div>
+    </main>
+    <div class="footer_container">
+        <footer>
+            <div class="copyright">
+                <div>mailer © 2023.</div>
+                <div>All rights reserved</div>
+            </div>
+            <img class="logos" src="static/images/mailer_logo_white.png" alt="Mailer_Logo">
+        </footer>
+    </div>
 </body>
 
 </html>

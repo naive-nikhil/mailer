@@ -1,17 +1,8 @@
 {
-    "cSpell.words": [
-        "condititon",
-        "deepak",
-        "Deepak",
-        "deepanshu",
-        "Deepanshu",
-        "fkeqdljfuyskhpgm",
-        "FYHWF",
-        "googleapiclient",
-        "Kumar",
-        "msal",
-        "Rnltg",
-        "Verma",
-        "VYGD"
-    ]
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "python.formatting.provider": "black",
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true
 }

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/static/images/mailer_logo_black_favicon.png">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_dashboard.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Function to hide and remove a flash message
+        function removeFlashMessage(element) {
+            $(element).fadeOut('slow', function () {
+                $(this).remove();
+            });
+        }
+        // Function to hide and clear flash messages after a certain duration
+        function clearFlashMessages() {
+            setTimeout(function () {
+                $('.flash-message').fadeOut('slow', function () {
+                    $(this).remove();
+                });
+            }, 8000);
+        }
+
+        // Call the function when the page is loaded
+        $(document).ready(function () {
+            clearFlashMessages();
+
+            // Event listener to remove flash message on cross icon click
+            $('.flash-message .close-icon').on('click', function () {
+                removeFlashMessage($(this).closest('.flash-message'));
+            });
+        });
+    </script>
+    <title>Dashboard</title>
+</head>
+
+<body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="flash-message">
+        {% for message in messages %}
+        <div>
+            <span>{{ message }}</span>
+            <div class="close-icon-container">
+                <span class="close-icon"><i class="fa-solid fa-xmark"></i></span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <div id="first-popup-container" class="popup-container">
+        <h1>Email Accounts</h1>
+        <span class="close-popup-icon" id="close-first-popup-button"><i class="fa-solid fa-xmark"></i></span>
+        <table class="my-table">
+            <thead>
+                <tr>
+                    <td style="text-align: center;">#</td>
+                    <td>Emails</td>
+                    <td style="text-align: center;">Actions</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% if mail_accounts %}
+                {% for account in mail_accounts %}
+                <tr>
+                    <td style="text-align: center;">{{ account[0] }}</td>
+                    <td>{{ account[1] }}</td>
+                    <td>
+                        <div class="actions">
+                            <i class="fa-solid fa-trash"></i>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="row-separation">
+                    <td colspan="3">
+                        <hr>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="3" style="text-align: center; background: #efefef;">No email accounts to show. Add
+                        accounts to start sending mails.</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+        <button class="campaign" onclick="location.href='#'" id="open-second-popup-button">Add Account</button>
+    </div>
+
+    <div id="second-popup-container" class="second-popup-container">
+        <span class="close-popup-icon" id="close-second-popup-button"><i class="fa-solid fa-xmark"></i></span>
+        <h1>Select Account Type</h1>
+        <p>Connect your Email account from which you want to send emails from mailer.</p>
+        <h3>Select the email service you use</h3>
+        <div class="accounts-type">
+            <div class="google">
+                <a href="{{ url_for('dashboard.gmail_oauth') }}">
+                <i class="fa-brands fa-google"></i>
+                <h4>Google</h4>
+                <p>Gmail & Google Workspace</p>
+                </a>
+            </div>
+            <div class="microsoft">
+                <i class="fa-brands fa-microsoft"></i>
+                <h4>Microsoft</h4>
+                <p>Exchange, O365, Outlook & Hotmail</p>
+            </div>
+            <div class="smtp">
+                <i class="fa-solid fa-hard-drive"></i>
+                <h4>SMTP / IMAP</h4>
+                <p>Any other Email Service provider account</p>
+            </div>
+        </div>
+        <p>Note: We don't store your mailbox data & you can remove all you email account at any time.</p>
+    </div>
+
+    <!-- Background overlay -->
+    <div id="popup-overlay" class="popup-overlay"></div>
+
+    <!-- Dashboard content -->
+    <div class="page-content">
+        <header>
+            <nav>
+                <div class="logo">
+                    <img class="logos" src="/static/images/mailer_logo_black.png" alt="Mailer_Logo">
+                    <h1>Campaigns</h1>
+                </div>
+                <div class="user_action">
+                    <button class="campaign" onclick="location.href='#'">Add Campaign</button>
+                    <button class="campaign" onclick="location.href='#'" id="open-first-popup-button">Email
+                        Accounts</button>
+                    <button id="logout-button">Logout</button>
+                </div>
+            </nav>
+        </header>
+        <main>
+            <table class="my-table">
+                <thead>
+                    <tr>
+                        <td style="text-align: center;">#</td>
+                        <td>Campaign Name</td>
+                        <td>Steps</td>
+                        <td>Active Step</td>
+                        <td>Prospects</td>
+                        <td>Finished</td>
+                        <td>Status</td>
+                        <td style="text-align: center;">Actions</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if campaigns %}
+                    {% for campaign in campaigns %}
+                    <tr>
+                        <td style="text-align: center;">{{ campaign[0] }}</td>
+                        <td>{{ campaign[1] }}</td>
+                        <td>{{ campaign[2] }}</td>
+                        <td>{{ campaign[3] }}</td>
+                        <td>{{ campaign[4] }}</td>
+                        <td>{{ campaign[5] }}</td>
+                        <td>{{ campaign[6] }}</td>
+                        <td>
+                            <div class="actions">
+                                <i class="fa-solid fa-toggle-on"></i>
+                                <i class="fa-solid fa-pen-to-square"></i>
+                                <i class="fa-solid fa-trash"></i>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="row-separation">
+                        <td colspan="1">
+                            <hr>
+                        </td>
+                        <td colspan="6">
+                            <hr>
+                        </td>
+                        <td colspan="1">
+                            <hr>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td colspan="8" style="text-align: center; background: #efefef;">No campaigns to show. Start a
+                            new
+                            campaign.</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </main>
+        <form action="/send-initial" method="post">
+            <input type="hidden" name="user" value="deepak">
+            <input type="submit" value="Send Initial (Deepak)">
+        </form>
+        <form action="/send-followup" method="post">
+            <input type="hidden" name="user" value="deepak">
+            <input type="submit" value="Send Follow-up (Deepak)">
+        </form>
+        <form action="/send-initial" method="post">
+            <input type="hidden" name="user" value="deepanshu">
+            <input type="submit" value="Send Initial (Deepanshu)">
+        </form>
+        <form action="/send-followup" method="post">
+            <input type="hidden" name="user" value="deepanshu">
+            <input type="submit" value="Send Follow-up (Deepanshu)">
+        </form>
+    </div>
+    <script>
+        // Logout button click event handler
+        document.getElementById("logout-button").addEventListener("click", function () {
+            window.location.href = "{{ url_for('users.logout') }}";
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get the button, popup container, and background overlay elements
+            var openFirstPopupButton = document.getElementById('open-first-popup-button');
+            var openSecondPopupButton = document.getElementById('open-second-popup-button');
+            var firstPopupContainer = document.getElementById('first-popup-container');
+            var secondPopupContainer = document.getElementById('second-popup-container');
+            var closeFirstPopupButton = document.getElementById('close-first-popup-button');
+            var closeSecondPopupButton = document.getElementById('close-second-popup-button');
+            var popupOverlay = document.getElementById('popup-overlay');
+            var pageContent = document.querySelector('.page-content');
+
+            // Add event listener to open the first popup
+            openFirstPopupButton.addEventListener('click', function () {
+                firstPopupContainer.style.display = 'block';
+                popupOverlay.style.display = 'block';
+                pageContent.classList.add('popup-open');
+            });
+
+            // Add event listener to close the first popup
+            closeFirstPopupButton.addEventListener('click', function () {
+                firstPopupContainer.style.display = 'none';
+                popupOverlay.style.display = 'none';
+                pageContent.classList.remove('popup-open');
+            });
+
+            // Add event listener to open the second popup
+            openSecondPopupButton.addEventListener('click', function () {
+                firstPopupContainer.style.display = 'none';
+                secondPopupContainer.style.display = 'block';
+                pageContent.classList.add('popup-open');
+            });
+
+            // Add event listener to close the second popup
+            closeSecondPopupButton.addEventListener('click', function () {
+                secondPopupContainer.style.display = 'none';
+                popupOverlay.style.display = 'none';
+                pageContent.classList.remove('popup-open');
+            });
+        });
+    </script>
+</body>
+
+</html>

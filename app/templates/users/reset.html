@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/static/images/mailer_logo_black_favicon.png">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_forgot_reset.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Function to hide and remove a flash message
+        function removeFlashMessage(element) {
+            $(element).fadeOut('slow', function () {
+                $(this).remove();
+            });
+        }
+        // Function to hide and clear flash messages after a certain duration
+        function clearFlashMessages() {
+            setTimeout(function () {
+                $('.flash-message').fadeOut('slow', function () {
+                    $(this).remove();
+                });
+            }, 8000);
+        }
+
+        // Call the function when the page is loaded
+        $(document).ready(function () {
+            clearFlashMessages();
+
+            // Event listener to remove flash message on cross icon click
+            $('.flash-message .close-icon').on('click', function () {
+                removeFlashMessage($(this).closest('.flash-message'));
+            });
+        });
+    </script>
+    <title>Reset</title>
+</head>
+
+<body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="flash-message">
+        {% for message in messages %}
+        <div>
+            <span>{{ message }}</span>
+            <div class="close-icon-container">
+                <span class="close-icon"><i class="fa-solid fa-xmark"></i></span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+    <div class="container-above">
+        <div class="container">
+            <img src="/static/images/mailer_logo_black.png" alt="Mailer_Logo">
+            <form action="{{ url_for('users.reset_password', token=token) }}" method="POST">
+                <label>New Password:</label>
+                <div class="password-container">
+                    <input type="password" id="password-field-1" name="new_password">
+                    <span class="password-toggle" onclick="togglePasswordVisibility(1)"><i
+                            class="fa-solid fa-eye"></i></span>
+                </div>
+                <label>Confirm Password:</label>
+                <div class="password-container">
+                    <input type="password" id="password-field-2" name="confirm_password">
+                    <span class="password-toggle" onclick="togglePasswordVisibility(2)"><i
+                            class="fa-solid fa-eye"></i></span>
+                </div>
+                <input type="submit" value="Reset Password">
+            </form>
+            <p>New to mailer? <a href="/users/register">Create an Account</a></p>
+        </div>
+    </div>
+    <script src="/static/js/users_script.js"></script>
+</body>
+
+</html>

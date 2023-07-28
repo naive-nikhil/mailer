@@ -1,0 +1,258 @@
+@import url('https://fonts.googleapis.com/css2?family=Krona+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=MuseoModerno:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: "MuseoModerno";
+    /* outline: solid 1px #000; */
+}
+
+header {
+    z-index: 999;
+    width: 100%;
+    background: #fff;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    margin: 0 5%;
+}
+
+.logos {
+    width: 80px;
+}
+
+.flash-message {
+    position: absolute;
+    left: calc(50% - 17px);
+    transform: translateX(-50%);
+    max-width: 100%;
+    display: inline-flex;
+    list-style: none;
+    text-align: center;
+    margin: 5px;
+    padding: 10px 10px 10px 10px;
+    border-radius: 5px 0 0 5px;
+    font-weight: 400;
+    color: #fff;
+    font-size: 1.2rem;
+    z-index: 999;
+    background-color: #435be3;
+}
+
+.close-icon-container {
+    background: #435be3;
+    position: absolute;
+    padding: 10px 0;
+    top: 0;
+    right: -34px;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 0 5px 5px 0;
+}
+
+.popup-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    z-index: 9999;
+    border-radius: 5px;
+}
+
+.second-popup-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    z-index: 9999;
+    border-radius: 5px;
+}
+
+.second-popup-container p {
+    color: #4e4e4e;
+    padding: 10px 0;
+    font-size: 1.1rem;
+}
+
+.second-popup-container .accounts-type {
+    display: flex;
+    gap: 10px;
+}
+
+.accounts-type > div{
+    flex: 1;
+}
+
+.accounts-type a{
+    text-decoration: none;
+    color: initial;
+}
+
+.google,
+.microsoft,
+.smtp {
+    background: #efefef;
+    padding: 40px 10px;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.accounts-type i {
+    font-size: 3rem;
+    color: #435be3;
+}
+
+.popup-container button {
+    width: 100%;
+}
+
+.popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+}
+
+.page-content {
+    transition: opacity 0.3s ease-in-out;
+}
+
+.popup-open .popup-container,
+.popup-open .popup-overlay {
+    display: block;
+}
+
+.popup-open .page-content {
+    opacity: 0.3;
+}
+
+.close-popup-icon {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    height: 40px;
+    width: 40px;
+    cursor: pointer;
+    background-color: #435be3;
+    outline: none;
+    border-radius: 100%;
+    overflow: hidden;
+}
+
+.close-popup-icon i {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.5rem;
+}
+
+
+.close-icon {
+    background: rgba(0, 0, 0, 0.1);
+    padding: 11px;
+}
+
+.campaign {
+    background: #435be3;
+    padding: 21px;
+    outline: none;
+    border: none;
+    border-radius: 2px;
+    color: #fff;
+    cursor: pointer;
+}
+
+button {
+    padding: 20px;
+    margin: 10px 0;
+    font-weight: 500;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+
+.logo h1 {
+    padding-left: 10px;
+    font-weight: 500;
+}
+
+.logo h1:nth-child(2) {
+    padding-left: 50px;
+}
+
+main {
+    margin: 0 5%;
+}
+
+table {
+    width: 100%;
+}
+
+table.my-table thead {
+    height: 80px;
+    color: #000;
+    background: #efefef;
+}
+
+tr td {
+    padding: 0 20px;
+}
+
+table.my-table tr {
+    color: #4e4e4e;
+    height: 80px;
+}
+
+table.my-table>tbody .row-separation {
+    height: 0;
+}
+
+
+table.my-table>tbody .row-separation td {
+    padding: 0;
+}
+
+
+table.my-table>tbody .row-separation td hr {
+    height: 3px;
+    border: none;
+    border-radius: 5px;
+    background-color: #efefef;
+    margin: 0 2px;
+}
+
+table.my-table>tbody tr td .actions {
+    text-align: center;
+}
+
+table.my-table>tbody tr td .actions i {
+    padding: 10px;
+    font-size: 1.5rem;
+}
