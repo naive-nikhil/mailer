@@ -68,6 +68,11 @@ nav {
     border-radius: 5px;
 }
 
+.actions a{
+    text-decoration: none;
+    color: #4e4e4e;
+}
+
 .second-popup-container {
     display: none;
     position: fixed;

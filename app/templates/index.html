@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="/static/images/mailer_logo_black_favicon.png">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_index.css')}}">
-    <title>Mailer</title>
+    <title>Mailers</title>
 </head>
 
 <body>
@@ -32,8 +32,10 @@
                 power of free email automation firsthand.</p>
             <h1>And <span>it's free!</span></h1>
             <p>You heard it right! We are giving free access to everyone.</p>
-            <button onclick="location.href='/users/register'">Get Started</button>
-            <button class="login" onclick="location.href='/users/login'">Login</button>
+            <div class="no-flex">
+                <button onclick="location.href='/users/register'">Get Started</button>
+                <button no-flex" onclick="location.href='/users/login'">Login</button>
+            </div>
         </div>
         <div class="section-two">
             <img src="static/images/vector.jpg" alt="Vector">
@@ -42,7 +44,7 @@
     <div class="footer_container">
         <footer>
             <div class="copyright">
-                <div>mailer © 2023.</div>
+                <div>mailer © 2023.&nbsp;</div>
                 <div>All rights reserved</div>
             </div>
             <img class="logos" src="static/images/mailer_logo_white.png" alt="Mailer_Logo">

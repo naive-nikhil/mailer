@@ -63,6 +63,7 @@
                 <tr>
                     <td style="text-align: center;">#</td>
                     <td>Emails</td>
+                    <td>Provider</td>
                     <td style="text-align: center;">Actions</td>
                 </tr>
             </thead>
@@ -70,29 +71,32 @@
                 {% if mail_accounts %}
                 {% for account in mail_accounts %}
                 <tr>
-                    <td style="text-align: center;">{{ account[0] }}</td>
+                    <td style="text-align: center;">{{ loop.index }}</td>
                     <td>{{ account[1] }}</td>
+                    <td>{{ account[2] }}</td>
                     <td>
                         <div class="actions">
-                            <i class="fa-solid fa-trash"></i>
+                            <a href="{{ url_for('dashboard.revoke', email=account[1]) }}">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
                         </div>
                     </td>
                 </tr>
                 <tr class="row-separation">
-                    <td colspan="3">
+                    <td colspan="4">
                         <hr>
                     </td>
                 </tr>
                 {% endfor %}
                 {% else %}
                 <tr>
-                    <td colspan="3" style="text-align: center; background: #efefef;">No email accounts to show. Add
+                    <td colspan="4" style="text-align: center; background: #efefef;">No email accounts to show. Add
                         accounts to start sending mails.</td>
                 </tr>
                 {% endif %}
             </tbody>
         </table>
-        <button class="campaign" onclick="location.href='#'" id="open-second-popup-button">Add Account</button>
+        <button class="campaign" id="open-second-popup-button">Add Account</button>
     </div>
 
     <div id="second-popup-container" class="second-popup-container">
@@ -103,9 +107,9 @@
         <div class="accounts-type">
             <div class="google">
                 <a href="{{ url_for('dashboard.gmail_oauth') }}">
-                <i class="fa-brands fa-google"></i>
-                <h4>Google</h4>
-                <p>Gmail & Google Workspace</p>
+                    <i class="fa-brands fa-google"></i>
+                    <h4>Google</h4>
+                    <p>Gmail & Google Workspace</p>
                 </a>
             </div>
             <div class="microsoft">
@@ -134,8 +138,8 @@
                     <h1>Campaigns</h1>
                 </div>
                 <div class="user_action">
-                    <button class="campaign" onclick="location.href='#'">Add Campaign</button>
-                    <button class="campaign" onclick="location.href='#'" id="open-first-popup-button">Email
+                    <button class="campaign" id="campaign">Add Campaign</button>
+                    <button class="campaign" id="open-first-popup-button">Email
                         Accounts</button>
                     <button id="logout-button">Logout</button>
                 </div>
@@ -196,7 +200,11 @@
                 </tbody>
             </table>
         </main>
-        <form action="/send-initial" method="post">
+
+        <button id="send-email">Send Test Email</button>
+        <button id="ms-test">MS Test</button>
+
+        <!-- <form action="/send-initial" method="post">
             <input type="hidden" name="user" value="deepak">
             <input type="submit" value="Send Initial (Deepak)">
         </form>
@@ -211,12 +219,23 @@
         <form action="/send-followup" method="post">
             <input type="hidden" name="user" value="deepanshu">
             <input type="submit" value="Send Follow-up (Deepanshu)">
-        </form>
+        </form> -->
     </div>
     <script>
         // Logout button click event handler
         document.getElementById("logout-button").addEventListener("click", function () {
             window.location.href = "{{ url_for('users.logout') }}";
+        });
+
+        document.getElementById("send-email").addEventListener("click", function () {
+            window.location.href = "{{ url_for('dashboard.send_mail') }}"
+        });
+
+        document.getElementById("ms-test").addEventListener("click", function () {
+            window.location.href = "{{ url_for('dashboard.ms_test') }}"
+        });
+        document.getElementById("campaign").addEventListener("click", function () {
+            window.location.href = "{{ url_for('dashboard.campaign') }}"
         });
 
         document.addEventListener('DOMContentLoaded', function () {

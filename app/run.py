@@ -1,6 +1,7 @@
 from app import app
-from flask import session
+import os
 
 
-if __name__ == '__main__':
-    app.run(debug=True, host='localhost', port=8178)
+if __name__ == "__main__":
+    os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
+    app.run(debug=True, host="localhost", port=8178)
